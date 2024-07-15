@@ -1,3 +1,5 @@
+@props(['profileData'])
+
 <nav class="navbar">
     <a href="#" class="sidebar-toggler">
         <i data-feather="menu"></i>
@@ -200,6 +202,12 @@
         <a href="{{route('admin.profile')}}" class="text-body ms-0">
           <i class="me-2 icon-md" data-feather="edit"></i>
           <span>Edit Profile</span>
+        </a>
+      </li>
+      <li class="dropdown-item py-2">
+        <a href="{{route('admin.changePassword')}}" class="text-body ms-0">
+          <i class="me-2 icon-md" data-feather="key"></i>
+          <span>Change Password</span>
         </a>
       </li>
       <li class="dropdown-item py-2">

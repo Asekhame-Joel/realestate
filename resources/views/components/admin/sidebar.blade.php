@@ -28,10 +28,10 @@
           <div class="collapse" id="emails">
             <ul class="nav sub-menu">
               <li class="nav-item">
-                <a href="pages/email/inbox.html" class="nav-link">Inbox</a>
+                <a href="{{route('all.types')}}" class="nav-link">All Types</a>
               </li>
               <li class="nav-item">
-                <a href="pages/email/read.html" class="nav-link">Read</a>
+                <a href="pages/email/read.html" class="nav-link">Add Type</a>
               </li>
               <li class="nav-item">
                 <a href="pages/email/compose.html" class="nav-link">Compose</a>

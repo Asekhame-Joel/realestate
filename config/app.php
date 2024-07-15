@@ -5,6 +5,14 @@ use Illuminate\Support\ServiceProvider;
 
 return [
 
+// config/app.php
+'providers' => [
+    // Other service providers...
+    App\Providers\ViewServiceProvider::class,
+],
+
+
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -186,3 +194,4 @@ return [
     ])->toArray(),
 
 ];
+

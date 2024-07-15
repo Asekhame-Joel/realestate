@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -19,8 +20,7 @@ class AdminController extends Controller
     {
         $id = Auth()->user()->id;
         $profileData = User::find($id);
-
-    return view('admin.index', compact('profileData'));
+        return view('admin.index', compact('profileData'));
     }
 
 
@@ -57,7 +57,7 @@ class AdminController extends Controller
         if ($request->hasFile('photo')) {
             // Store the uploaded file in the 'upload/admin_images' directory and get the path
             $path = $request->file('photo')->store('upload/admin_images', 'public');
-    
+
             // Save the relative path to the database
             $data->photo = $path;
         }
@@ -70,6 +70,51 @@ class AdminController extends Controller
 
         );
         return redirect()->back()->with($notification);
+
+    }
+    public function changePassword()
+    {
+        $id = Auth()->user()->id;
+        $profileData = User::find($id);
+        return view('admin.change_password', compact('profileData'));
+    }
+
+
+    public function UpdatePassword(Request $request)
+    {
+        //validating the request from the form
+        $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required|confirmed'
+        ]);
+
+        //get the authenticated user
+        $user = Auth::user();
+
+        // Verify the old password
+        if (!Hash::check($request->old_password, $user->password)) {
+
+            $notification = array(
+                'message' => 'Old Password Not Correct',
+                'alert-type' => 'error'
+            );
+            // Old password doesn't match
+            return redirect()->back()->with($notification);
+        }
+
+
+        $notification = array(
+            'message' => 'Password Updated Successfully',
+            'alert-type' => 'success'
+        );
+        //udpating the users password
+        //Hash::make() securely hashes the plain-text password ($request->new_password) before storing it in the database.
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+        return redirect()->back()->with($notification);
+
+
+
 
     }
 

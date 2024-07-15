@@ -1,10 +1,15 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Models\PropertyType;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AgentController;
+use App\Http\Controllers\Backend\propertyTypeController;
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,8 +40,28 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/admin/profile/store', [AdminController::class, 'store'])->name('admin.profile.store');
     Route::get('admin', [AdminController::class, 'index'])->name('admin.index');
     Route::post('/admin/logout', [AdminController::class, 'destroy'])->name('admin.logout');
+    Route::get('admin/change_password', [AdminController::class, 'changePassword'])->name('admin.changePassword');
+    Route::post('admin/UpdatePassword', [AdminController::class, 'UpdatePassword'])->name('admin.UpdatePassword');
+});
+
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+Route::controller(propertyTypeController::class)->group(function () {
+    Route::get('/admin/all_types', 'AllType')->name('all.types');
+    Route::get('/admin/add_types', 'AddType')->name('add.types');
+    Route::get('/admin/add_types/edit/{propertyType}', 'EditType')->name('edit.types');
+    Route::post('/admin/store_types', 'storeType')->name('store.types');
+    Route::delete('/admin/delete_types/{propertyType}', 'DestroyType')->name('destroy.types');
+    Route::patch('/admin/update_types/{propertyType}', 'UpdateType')->name('update.types');
+
+
+
 
 });
+});
+
+
+
 
 Route::middleware(['auth', 'role:agent'])->group(function () {
     Route::get('agent', [AgentController::class, 'index'])->name('agent.index');
