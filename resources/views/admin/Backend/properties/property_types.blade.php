@@ -39,14 +39,24 @@
                         <td>{{$item->type_name}}</td>
                         <td>{{$item->type_icon}}</td> 
                         <td>
-                          <a href="{{route('edit.types', $item->id)}}" class="btn btn-success">Edit</a>    
-                      
-                          <!-- Inline form for delete button -->
-                          <form action="{{ route('destroy.types', $item->id) }}" method="POST" style="display: inline;">
-                              @csrf
-                              @method('DELETE')
-                              <button type="submit" class="btn btn-danger">Delete</button>
-                          </form>          
+                          @if(Auth::user()->can('type.edit'))
+
+                          <a href="{{route('edit.types', $item->id)}}" class="btn btn-success">Edit</a>  
+                          @endif  
+
+                          @if(Auth::user()->can('type.delete'))
+          
+                            <!-- Inline form for delete button -->
+                            <form action="{{ route('destroy.types', $item->id) }}" method="POST" class="delete-form" style="display: inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" class="btn btn-danger delete-button">Delete</button>
+                            </form>
+                            @endif
+
+                        </td>
+
+                                
                       </td>
                       </tr>
                       @endforeach
@@ -92,6 +102,8 @@
     <!-- core:js -->
     <script src="{{asset('backend/assets/vendors/core/core.js')}}"></script>
     <!-- endinject -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="{{asset('backend/assets/js/alert.js')}}"></script>
 
     <!-- Plugin js for this page -->
     <script src="{{asset('backend/assets/vendors/flatpickr/flatpickr.min.js')}}"></script>

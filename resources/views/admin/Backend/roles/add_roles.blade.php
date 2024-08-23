@@ -28,7 +28,7 @@
                                     <div class="card-body">
 
                                         <form class="forms-sample" method="POST"
-                                            action="{{ route('store.types') }}" >
+                                            action="{{route('store.roles')}}" >
                                             @csrf
                                         
                                             @if ($errors->any())
@@ -41,24 +41,16 @@
                                                 </div>
                                             @endif
                                             <div class="mb-3">
-                                                <label for="type_name" class="form-label">Property Type Name</label>
-                                                <input type="text" name="type_name" class="form-control
-                                                 @error('type_name') is-invalid @enderror"
-                                                    id="type_name">
-                                                    @error('type_name')
+                                                <label for="name" class="form-label">Role Name</label>
+                                                <input type="text" name="name" class="form-control
+                                                 @error('name') is-invalid @enderror"
+                                                    id="name">
+                                                    @error('name')
                                                     <span class="text-danger">
                                                         {{$message}}
                                                     </span>
                                                     @enderror
                                             </div>
-
-                                            <div class="mb-3">
-                                                <label for="type_icon" class="form-label">Icon Name</label>
-                                                <input type="type_icon" name="type_icon" class="form-control"
-                                                    id="type_icon">
-                                            </div>
-
-
                                             <button type="submit" class="btn btn-primary me-2">Save</button>
                                         </form>
 
@@ -83,7 +75,9 @@
 
    
  
-  
+   
+
+
     <!-- core:js -->
     <script src="{{asset('backend/assets/vendors/core/core.js')}}"></script>
     <!-- endinject -->

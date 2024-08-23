@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
+
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
@@ -120,6 +122,98 @@ class AdminController extends Controller
 
 
 
+    public function AllAdmin(){
+        $id = Auth()->user()->id;
+        $profileData = User::find($id);
+        $alladmin = User::where('role', 'admin')->get();
+        return view('admin.Backend.admin.alladmin', compact('profileData', 'alladmin'));
+    }
+
+    public function AddAdmin(){
+        $id = Auth()->user()->id;
+        $profileData = User::find($id);
+        $roles = Role::all();
+
+        return view('admin.Backend.admin.add_admin', compact('profileData', 'roles'));
+    }
+
+    public function StoreAdmin(Request $request)
+    {
+        // $roles = Role::all();
+$user = new User;
+$user->name = $request->name;
+$user->username = $request->username;
+$user->email = $request->email;
+$user->address = $request->address;
+$user->phone = $request->phone;
+$user->password =  hash::make($request->password);
+$user->role = 'admin';
+$user->status = 'active';
+$user->save();
+
+        // if ($request->hasFile('photo')) {
+        //     $user['photo'] = $request->file('photo')->move(public_path('upload/admin_images'), $request->file('photo')->getClientOriginalName());
+        // }  
+
+        // $user->roles()->detach();
+        
+        if($request->roles){
+            $user->assignRole($request->roles);
+        }
+
+        $notification = array(
+            'message' => 'Admin Created Successfully',
+            'alert-type' => 'success'
+
+        );
+        return redirect()->route('alladmin')->with($notification);
+
+    }
+
+    public function deleteAdmin($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+        
+
+        $notification = array(
+            'message' => 'Admin Deleted Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('alladmin')->with($notification);
+    }
+
+    public function EditAdmin($id){
+        $roles = Role::all();
+        // $id = User::findOrFail($id);
+        $profileData = User::find($id);
+        return view('admin.Backend.admin.edit_admin', compact('profileData', 'roles'));
+
+    }
+    public function UpdateAdmin(Request $request, $id)
+    {
+        $profileData = User::find($id);
+        $profileData->name = $request->input('name');
+        $profileData->username = $request->input('username');
+        $profileData->address = $request->input('address');
+        $profileData->phone = $request->input('phone');
+        $profileData->role = 'admin';
+        $profileData->status = 'active';
+        $profileData->update();
+
+        $profileData->roles()->detach();
+        if($request->roles){
+            $profileData->assignRole($request->roles);
+        }
+
+        $notification = array(
+            'message' => 'Admin Updated Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('alladmin')->with($notification);
+    }
 }
 // $attributes = $this->ValidatePost();
 // if (isset($attributes['thumbnail'])) {

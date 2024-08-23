@@ -15,14 +15,14 @@ class propertyTypeController extends Controller
         $id = Auth()->user()->id;
         $profileData = User::find($id);
         $types = PropertyType::latest()->get();
-        return view('admin.Backend.property_types', compact('profileData', 'types'));
+        return view('admin.Backend.properties.property_types', compact('profileData', 'types'));
     }
     public function AddType(){
 
         $id = Auth()->user()->id;
         $profileData = User::find($id);
         $types = PropertyType::latest()->get();
-        return view('admin.Backend.add_propertyType', compact('profileData', 'types'));
+        return view('admin.Backend.properties.add_propertyType', compact('profileData', 'types'));
     }
 
     public function storeType(Request $request){
@@ -48,11 +48,11 @@ class propertyTypeController extends Controller
     public function DestroyType(PropertyType $propertyType){
         $propertyType->delete();
 
-        $notification = array(
+        $notification = [
             'message' => 'Property Deleted Successfully',
             'alert-type' => 'success'
+        ];
 
-        );
         return redirect()->back()->with($notification);
 
         
@@ -61,7 +61,7 @@ class propertyTypeController extends Controller
         $id = Auth()->user()->id;
         $profileData = User::find($id);
         $types = PropertyType::latest()->get();
-        return view('admin.Backend.edit_propertyType', compact('profileData', 'types', 'propertyType'));
+        return view('admin.Backend.properties.edit_propertyType', compact('profileData', 'types', 'propertyType'));
         
     }
 
